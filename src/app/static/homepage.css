@@ -1,0 +1,338 @@
+/* Hero Carousel Styles */
+#heroCarousel {
+  position: relative;
+  height: 65vh;
+  overflow: hidden;
+}
+
+.carousel-item {
+  height: 65vh;
+  position: relative;
+}
+
+/* Overlay for carousel images */
+.carousel-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.carousel-item img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.carousel-caption h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-caption p {
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Carousel Controls */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.carousel-indicators {
+  bottom: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  /* Carousel text adjustments */
+  .carousel-caption h1 {
+    font-size: 1.9rem;
+  }
+
+  .carousel-caption p {
+    font-size: 0.9rem;
+  }
+
+  /* Featurette text adjustments */
+  .section h1 {
+    font-size: 1.8rem;
+  }
+
+  .section p {
+    font-size: 0.9rem;
+  }
+
+  /* Adjust button size if needed */
+  .btn-feature {
+    padding: 8px 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* Even smaller text for very small devices */
+@media (max-width: 576px) {
+  .carousel-caption h1 {
+    font-size: 1.8rem;
+  }
+
+  .carousel-caption p {
+    font-size: 0.85rem;
+  }
+
+  .section h1 {
+    font-size: 1.5rem;
+  }
+
+  .section p {
+    font-size: 0.9rem;
+  }
+}
+
+/* features card */
+.image {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  object-fit: cover; /* Ensure the image scales correctly */
+  border-radius: 4%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow by default */
+}
+
+.image:hover {
+  transform: scale(1.05) rotate(-1deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+}
+
+/* Feature button styles */
+.btn-feature {
+  width: 100%;
+  text-align: center;
+  padding: 5px 0;
+  margin: 1px 0;
+  transition: all 0.3s ease;
+}
+
+.btn-feature:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Featurette divider styling */
+.featurette-divider {
+  margin: 3rem 0; /* Base margin for all dividers */
+}
+
+/* Footer Styles */
+.footer-color {
+  background-color: #131313;
+  width: 100%;
+  padding: 2rem 0;
+  margin-top: 2rem;
+}
+
+.footer-color a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-color a:hover {
+  color: #55bcc9;
+}
+
+.footer-color i {
+  margin-right: 8px;
+}
+
+.footer-color hr {
+  opacity: 0.2;
+  margin: 1rem 0;
+}
+
+.footer-color ul li {
+  margin-bottom: 0.5rem;
+}
+
+/* Featurette scroll-in animations */
+.section .content h1,
+.section .content p,
+.section .content .btn,
+.section .image {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.section.in-view .content h1 {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.1s;
+}
+.section.in-view .content p {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.25s;
+}
+.section.in-view .content .btn {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.4s;
+}
+.section.in-view .image {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.2s;
+}
+
+/* =============================
+   Pricing section
+   ============================= */
+.pricing-section {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.pricing-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.pricing-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  width: 100%; /* ensure full column width when parent is display:flex */
+  height: 100%; /* make cards equal height in grid */
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+/* Flex the grid columns so cards can stretch equally */
+.pricing-section .row > [class^="col-"],
+.pricing-section .row > [class*=" col-"] {
+  display: flex;
+}
+/* Make inner body a flex column so feature list grows and button stays at bottom */
+.pricing-card .card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pricing-card.highlight {
+  border: 2px solid #55bcc9;
+  box-shadow: 0 16px 38px rgba(85, 188, 201, 0.35);
+}
+.badge-popular {
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: #55bcc9;
+  color: #000;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+.pricing-card .plan-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.pricing-card .price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.pricing-card .price .amount {
+  font-size: 2rem;
+  font-weight: 800;
+}
+.pricing-card .price .period {
+  color: #666;
+}
+.pricing-card .subtitle {
+  color: #666;
+  margin-top: 0.25rem;
+}
+.pricing-card .features {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  flex: 1 1 auto; /* allow features list to grow and push CTA to bottom */
+}
+.pricing-card .features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+.pricing-card .features i {
+  color: #55bcc9;
+}
+
+/* Animate in when section becomes visible */
+.section.in-view .pricing-card {
+  opacity: 1;
+  transform: none;
+}
+/* Stagger effect for the two columns/cards */
+.section.in-view .row.g-4 > div:nth-child(1) .pricing-card {
+  transition-delay: 0.1s;
+}
+.section.in-view .row.g-4 > div:nth-child(2) .pricing-card {
+  transition-delay: 0.22s;
+}
+
+/* Dark mode variant */
+body.dark-mode .pricing-card {
+  background: rgba(10, 10, 10, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #eaeaea;
+}
+body.dark-mode .pricing-card .price .period,
+body.dark-mode .pricing-card .subtitle {
+  color: #e2e2e2; /* lighter for readability */
+}
+body.dark-mode .badge-popular {
+  background: #55bcc9;
+  color: #000;
+}
+/* Dark mode: lighten section lead text under title */
+body.dark-mode .pricing-section .text-muted {
+  color: #e0e0e0 !important;
+}
+/* Ensure title is readable on dark backgrounds */
+body.dark-mode .pricing-title {
+  color: #f2f2f2;
+}
+
+/* Mobile tweaks: ensure full width and centered columns */
+@media (max-width: 576px) {
+  .pricing-section .row {
+    justify-content: center !important;
+  }
+  .pricing-section .row > [class^="col-"],
+  .pricing-section .row > [class*=" col-"] {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* keep cards centered; Bootstrap cols already go full width on xs */
+}

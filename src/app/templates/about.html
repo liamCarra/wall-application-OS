@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}
+About Us
+{% endblock head_title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'about.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Mission Section -->
+<div class="mission-banner">
+    <div class="container">
+        <div class="mission-content text-center">
+            <h1>Our Mission</h1>
+            <p class="mission-text">At Wallify, we believe every screen deserves to be a masterpiece. Our journey began
+                when two
+                developers, frustrated by the lack of quality wallpapers, decided to create something extraordinary.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container about-content">
+    <hr class="section-divider">
+
+    <!-- Values Section -->
+    <div class="values-section">
+        <h2 class="text-center mb-5">Our Core Values</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>Pushing the boundaries of what's possible with AI-powered image generation and customization.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Passion</h3>
+                    <p>Dedicated to creating and curating the highest quality wallpapers for our community.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>Building a space where creators and enthusiasts can share, inspire, and grow together.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Tech We Use Section -->
+    <div class="tech-section">
+        <h2 class="text-center mb-4">Tech We Use</h2>
+        <p class="text-center text-muted mb-4">Our stack combines performance, reliability, and modern AI tooling.</p>
+        <div class="tech-list row justify-content-center g-2 g-md-3">
+            <div class="col-auto"><span class="tech-badge"><i class="fab fa-python"></i> Python</span></div>
+            <div class="col-auto"><span class="tech-badge"><i class="fas fa-seedling"></i> Django</span></div>
+            <div class="col-auto"><span class="tech-badge"><i class="fas fa-database"></i> PostgreSQL</span></div>
+            <div class="col-auto"><span class="tech-badge"><i class="fas fa-bolt"></i> Neon.tech</span></div>
+            <div class="col-auto"><span class="tech-badge"><i class="fas fa-cloud"></i> AWS S3</span></div>
+            <div class="col-auto"><span class="tech-badge"><i class="fas fa-robot"></i> Replicate</span></div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Team Section -->
+    <!-- <div class="team-section">
+        <h2 class="text-center mb-5">Meet Our Team</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="{% static 'images/jurgen-zenuni.jpg' %}" alt="Jurgen Zenuni">
+                    </div>
+                    <div class="team-info">
+                        <h3>Jurgen Zenuni</h3>
+                        <p class="title">Founder & Lead Developer</p>
+                        <p class="bio">Passionate about AI and design, Jurgen leads our technical innovation.</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/jurgen-zenuni-323273277/"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com/jurgenzenuni"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="{% static 'images/mike-lin.jpg' %}" alt="Michael Lin">
+                    </div>
+                    <div class="team-info">
+                        <h3>Michael Lin</h3>
+                        <p class="title">Co-Founder & Security Expert</p>
+                        <p class="bio">Michael brings his expertise in Security and AI to ensure our platform is secure and reliable.</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/michael-l-547365221/"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const targets = [
+            document.querySelector('.mission-content'),
+            ...document.querySelectorAll('.value-card'),
+            ...document.querySelectorAll('.tech-badge')
+        ].filter(Boolean);
+
+        if (!('IntersectionObserver' in window)) {
+            targets.forEach(t => t.classList.add('in-view'));
+            return;
+        }
+
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const options = isMobile ? { threshold: 0.05, rootMargin: '0px 0px 25% 0px' } : { threshold: 0.15, rootMargin: '0px 0px 10% 0px' };
+
+        const observer = new IntersectionObserver((entries, ob) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    ob.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        targets.forEach(t => observer.observe(t));
+    });
+</script>
+{% endblock %}

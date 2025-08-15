@@ -1,0 +1,73 @@
+{% load static %}
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav d-lg-none">
+    <a href="{% url 'homepage' %}" class="mobile-nav-item {% if request.path == '/' %}active{% endif %}"
+        aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="{% url 'generate_image' %}"
+        class="mobile-nav-item {% if request.path == '/generate_image/' %}active{% endif %}" aria-label="AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+    </a>
+
+    {% if username %}
+    <!-- Middle: Profile trigger (offcanvas bottom sheet) when signed in -->
+    <button type="button" class="mobile-nav-item profile-trigger" data-bs-toggle="offcanvas"
+        data-bs-target="#mobileProfileSheet" aria-controls="mobileProfileSheet" aria-label="Profile">
+        <img src="{{ profile_picture_url }}" alt="Profile" class="mobile-pfp">
+        <span>Profile</span>
+    </button>
+    {% else %}
+    <!-- Middle: Auth when signed out -->
+    <div class="mobile-nav-item auth-group">
+        <a href="#" class="auth-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Login">
+            <i class="fa-regular fa-user"></i>
+            <span>Login</span>
+        </a>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'gallery' %}" class="mobile-nav-item {% if request.path == '/gallery/' %}active{% endif %}"
+        aria-label="Gallery">
+        <i class="fa-regular fa-images"></i>
+        <span>Gallery</span>
+    </a>
+
+    <a href="{% url 'support' %}" class="mobile-nav-item {% if request.path == '/support/' %}active{% endif %}"
+        aria-label="Forums">
+        <i class="fa-regular fa-comments"></i>
+        <span>Forums</span>
+    </a>
+
+    <!-- Rightmost: Theme toggle -->
+    <button type="button" class="mobile-nav-item theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <i class="fa-regular fa-moon"></i>
+        <span>Theme</span>
+    </button>
+</nav>
+
+{% if username %}
+<!-- Offcanvas bottom sheet for profile actions (mobile only) -->
+<div class="offcanvas offcanvas-bottom mobile-profile-sheet d-lg-none" tabindex="-1" id="mobileProfileSheet"
+    aria-labelledby="mobileProfileSheetLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileProfileSheetLabel">Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body small">
+        <div class="list-group">
+            <a href="{% url 'profile' %}" class="list-group-item list-group-item-action d-flex align-items-center">
+                <i class="fa-regular fa-id-badge me-2"></i>
+                View Profile
+            </a>
+            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action d-flex align-items-center">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                Logout
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head_title %}
+Homepage
+{% endblock head_title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'homepage.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<!-- Hero Carousel -->
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+    </div>
+
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'images/bgnew3.jpg' %}" class="d-block w-100" alt="Hero 1">
+            <div class="carousel-caption text-start">
+                <h1>Explore Our Image Gallery</h1>
+                <p>Search our vast collection of images and unique art.
+                    Find wallpapers for all your devices, and contribute your own artwork for others to view and share.
+                </p>
+                <p><a class="btn btn-auth" href="{% url 'gallery' %}">View Gallery</a></p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'images/1337547.png' %}" class="d-block w-100" alt="Hero 2">
+            <div class="carousel-caption">
+                <h1>Get to Know Us</h1>
+                <p>Discover the story behind our journey and the values that drive us forward.</p>
+                <p><a class="btn btn-auth" href="{% url 'about' %}">Learn more</a></p>
+            </div>
+        </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- START THE FEATURETTES -->
+<div class="container">
+    <hr class="featurette-divider">
+
+    <div class="container mt-5">
+        <div class="row section">
+            <!-- Text and Button -->
+            <div class="col-lg-5 mb-4 my-lg-auto content">
+                <h1 class="font-weight-bold mb-3">Free AI Image Generation</h1>
+                <p class="mb-4">
+                    Using Bytedance Hyper Flux you can generate your own custom AI images. Users can upload the image to
+                    our
+                    public database.
+                </p>
+                <a href="{% url 'generate_image' %}" class="btn btn-auth btn-feature">Generate Now</a>
+            </div>
+            <!-- Image -->
+            <div class="col-lg-7 mb-1">
+                <img src="{% static 'images/cardimg5.jpg' %}" alt="OpenAI Image" class="image w-100"
+                    style="height: 600px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <hr class="featurette-divider">
+
+    <div class="container my-5">
+        <div class="row section">
+            <!-- Image -->
+            <div class="col-lg-7 mb-3">
+                <img src="{% static 'images/cardai3.jpg' %}" alt="Gallery Image" class="image w-100"
+                    style="height: 600px; object-fit: cover;">
+            </div>
+            <!-- Text and Button -->
+            <div class="col-lg-5 mb-4 my-lg-auto content">
+                <h1 class="font-weight-bold mb-3">Explore, Dream, Discover</h1>
+                <p class="mb-4">
+                    Discover new horizons, dream big, and make unforgettable memories. Become a member today.
+                </p>
+                <button class="btn btn-auth btn-feature" data-bs-toggle="modal" data-bs-target="#registerModal">Sign up
+                    Today</button>
+            </div>
+        </div>
+    </div>
+    <hr class="featurette-divider">
+</div>
+<!-- Pricing Section -->
+<div class="container my-5">
+    <section id="pricing" class="pricing-section section">
+        <div class="text-center mb-4">
+            <h2 class="pricing-title">Choose your plan</h2>
+            <p class="text-muted">Simple pricing for creators</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Free Plan -->
+            <div class="col-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="pricing-card">
+                    <div class="card-body p-4">
+                        <h3 class="plan-name">Free</h3>
+                        <div class="price"><span class="amount">$0</span><span class="period">/month</span></div>
+                        <p class="subtitle">3 AI generations per day</p>
+                        <ul class="features">
+                            <li><i class="fa-regular fa-circle-check"></i> Access to gallery</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Upload and share images</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Community forums</li>
+                        </ul>
+                        <div class="d-grid mt-3">
+                            {% if is_premium %}
+                            <a href="{% url 'generate_image' %}" class="btn btn-outline-auth">Keep creating</a>
+                            {% else %}
+                            {% if username %}
+                            <a href="{% url 'generate_image' %}" class="btn btn-outline-auth">Start generating</a>
+                            {% else %}
+                            <button class="btn btn-outline-auth" data-bs-toggle="modal"
+                                data-bs-target="#registerModal">Get started</button>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="col-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="pricing-card highlight position-relative">
+                    {% if is_premium %}
+                    <div class="badge-popular">Active</div>
+                    {% else %}
+                    <div class="badge-popular">Most popular</div>
+                    {% endif %}
+                    <div class="card-body p-4">
+                        <h3 class="plan-name">Premium</h3>
+                        <div class="price"><span class="amount">$2.99</span><span class="period">/month</span></div>
+                        <p class="subtitle">Unlimited AI generations</p>
+                        <ul class="features">
+                            <li><i class="fa-regular fa-circle-check"></i> Everything in Free</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Unlimited AI image generations</li>
+                            <li><i class="fa-regular fa-circle-check"></i> Priority support</li>
+                        </ul>
+                        <div class="d-grid mt-3">
+                            {% if is_premium %}
+                            <button class="btn btn-secondary" type="button" disabled>You're Premium</button>
+                            {% else %}
+                            <button id="goPremiumButton" class="btn btn-auth" type="button">Go Premium</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="featurette-divider">
+</div>
+<!--FOOTER-->
+<footer class="footer-color">
+    <div class="container-fluid">
+        <div class="row justify-content-center text-center text-light">
+            <div class="col-md-3 mt-4">
+                <img src="{% static 'images/wlogo4.png' %}" alt="Wallify Logo" height="120px">
+                <p style="margin-top: -18px">Official Wallify Website</p>
+            </div>
+            <div class="col-md-3 mt-5">
+                <h5>Connect With Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-center text-center text-light mt-5">
+            <div class="col-md-12">
+                <hr class="bg-light">
+                <p>&copy; 2024 Wallify. All Rights Reserved.</p>
+            </div>
+        </div>
+</footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sections = document.querySelectorAll('.section');
+        if (!('IntersectionObserver' in window)) {
+            sections.forEach(s => s.classList.add('in-view'));
+            return;
+        }
+
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const options = isMobile
+            ? { threshold: 0.05, rootMargin: '0px 0px 25% 0px' } // trigger earlier on mobile
+            : { threshold: 0.15, rootMargin: '0px 0px 10% 0px' }; // slightly earlier on desktop too
+
+        const observer = new IntersectionObserver((entries, ob) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    ob.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        sections.forEach(sec => observer.observe(sec));
+    });
+</script>
+<script>
+    // Hook up Go Premium button
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('goPremiumButton');
+        if (!btn) return;
+        btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            try {
+                const res = await fetch('/billing/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || ''
+                    }
+                });
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    alert(data.error || 'Failed to start checkout. Please sign in and try again.');
+                    return;
+                }
+                const data = await res.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Unexpected response from server.');
+                }
+            } catch (e) {
+                alert('Network error. Please try again.');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    });
+</script>
+{% endblock extra_js %}

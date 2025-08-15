@@ -1,0 +1,290 @@
+/* Dark mode base */
+body.dark-mode {
+  background-color: #050505;
+  color: #eaeaea;
+}
+
+/* Navbar adjustments in dark mode */
+body.dark-mode .navbar {
+  background: #050505 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+/* Keep frosted glass look when using the dedicated class */
+body.dark-mode .glass-nav {
+  background: rgba(10, 10, 10, 0.45) !important;
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+/* Transparent on homepage until scrolled */
+body.dark-mode .homepage-navbar {
+  background: transparent !important;
+  background-color: transparent !important; /* override bg-white */
+  box-shadow: none !important;
+}
+/* Ensure homepage navbar is transparent at top even if bg-white is present */
+body.dark-mode nav.navbar.homepage-navbar,
+body.dark-mode .homepage-navbar.bg-white {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+/* And becomes near-black when scrolled */
+body.dark-mode nav.navbar.homepage-navbar.navbar-scrolled {
+  background: #050505 !important;
+  background-color: #050505 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Explicitly handle scrolled state on homepage in dark mode */
+body.dark-mode .homepage-navbar.navbar-scrolled,
+body.dark-mode .navbar.navbar-scrolled {
+  background: #050505 !important;
+  background-color: #050505 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .navbar .nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+body.dark-mode .navbar .nav-link:hover,
+body.dark-mode .navbar .nav-link.active {
+  color: #ffffff !important;
+}
+body.dark-mode .navbar .navbar-brand-wallify {
+  color: #ffffff;
+}
+/* Force white underline in dark mode (desktop and scrolled) */
+@media (min-width: 992px) {
+  body.dark-mode .nav-link::after,
+  body.dark-mode .navbar-scrolled .nav-link::after {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+  body.dark-mode .nav-link:hover::after,
+  body.dark-mode .nav-link.active::after,
+  body.dark-mode .navbar-scrolled .nav-link:hover::after,
+  body.dark-mode .navbar-scrolled .nav-link.active::after {
+    background-color: #ffffff !important;
+  }
+}
+body.dark-mode .hamburger-menu span {
+  background-color: #ffffff;
+}
+/* Keep hamburger lines white even when navbar gets scrolled class */
+body.dark-mode .navbar-scrolled .hamburger-menu span,
+body.dark-mode nav.navbar.navbar-scrolled .hamburger-menu span {
+  background-color: #ffffff !important;
+}
+
+/* Buttons */
+body.dark-mode .btn-auth {
+  background: #ffffff;
+  color: #050505;
+  border-color: #ffffff;
+}
+body.dark-mode .btn-auth:hover {
+  background: #55bcc9;
+  border-color: #55bcc9;
+  color: #ffffff;
+}
+body.dark-mode .btn-outline-auth {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+body.dark-mode .btn-outline-auth:hover {
+  background: #55bcc9;
+  border-color: #55bcc9;
+  color: #ffffff;
+}
+/* Theme toggle icon in dark mode */
+body.dark-mode #themeToggle {
+  color: #ffffff;
+}
+/* Ensure white icon even if navbar has bg-white or navbar-scrolled classes */
+body.dark-mode .navbar.bg-white #themeToggle,
+body.dark-mode .navbar.navbar-scrolled #themeToggle,
+body.dark-mode .homepage-navbar #themeToggle {
+  color: #ffffff !important;
+}
+body.dark-mode .navbar #themeToggle:hover {
+  color: #ffffff !important;
+}
+
+/* Homepage carousel captions */
+body.dark-mode .carousel-caption h1,
+body.dark-mode .carousel-caption p {
+  color: #ffffff;
+}
+
+/* Dividers, borders */
+body.dark-mode .featurette-divider,
+body.dark-mode hr {
+  border-top-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Homepage sections */
+body.dark-mode .section .content h1,
+body.dark-mode .section .content p {
+  color: #eaeaea;
+}
+
+/* Footer */
+body.dark-mode .footer-color {
+  background: #050505;
+}
+body.dark-mode .footer-color,
+body.dark-mode .footer-color a,
+body.dark-mode .footer-color p,
+body.dark-mode .footer-color h5 {
+  color: #eaeaea;
+}
+body.dark-mode .footer-color a:hover {
+  color: #55bcc9;
+}
+
+/* Cards and containers on homepage */
+body.dark-mode .card {
+  background: #0f0f0f;
+  color: #eaeaea;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Forms (if any on homepage) */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0f0f0f;
+  color: #eaeaea;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #bdbdbd;
+}
+
+/* Dropdown menu */
+body.dark-mode .dropdown-menu {
+  background: #0f0f0f;
+  color: #eaeaea;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark-mode .dropdown-item {
+  color: #eaeaea;
+}
+body.dark-mode .dropdown-item:hover {
+  background: #55bcc9;
+  color: #fff;
+}
+
+/* Mobile navbar (collapsed) in dark mode */
+@media (max-width: 991.98px) {
+  body.dark-mode .navbar-collapse {
+    background: #0f0f0f !important; /* dark background so white links are visible */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+  }
+  /* Match frosted glass for collapsed menu when glass-nav is used */
+  body.dark-mode .glass-nav .navbar-collapse {
+    background: rgba(10, 10, 10, 0.45) !important;
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  }
+  body.dark-mode .navbar-collapse .nav-link {
+    color: #ffffff !important;
+  }
+  body.dark-mode .navbar-collapse .nav-link:hover,
+  body.dark-mode .navbar-collapse .nav-link.active {
+    color: #55bcc9 !important;
+  }
+}
+
+/* Ensure black text flips to white on homepage */
+body.dark-mode .text-dark {
+  color: #ffffff !important;
+}
+body.dark-mode .bg-white {
+  background-color: #050505 !important;
+}
+
+/* Specific homepage tweaks */
+body.dark-mode #heroCarousel .carousel-indicators button {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+body.dark-mode #heroCarousel .carousel-indicators .active {
+  background-color: #ffffff;
+}
+
+/* About page specific dark mode tweaks */
+body.dark-mode .mission-banner {
+  /* Keep background image visible in dark mode */
+  background-color: transparent !important;
+}
+body.dark-mode .mission-content h1,
+body.dark-mode .mission-content p {
+  color: #ffffff;
+}
+body.dark-mode .about-content .section-divider {
+  border-top-color: rgba(255, 255, 255, 0.15) !important;
+}
+body.dark-mode .value-card {
+  background: #0f0f0f;
+  color: #ffffff; /* brighten card text for readability */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+/* Ensure headings and body text inside value cards are bright */
+body.dark-mode .value-card h3,
+body.dark-mode .value-card h4,
+body.dark-mode .value-card h5,
+body.dark-mode .value-card p,
+body.dark-mode .value-card li,
+body.dark-mode .value-card .card-title,
+body.dark-mode .value-card .card-text {
+  color: #ffffff !important;
+}
+/* Keep value card icons/logos white, not cyan */
+body.dark-mode .value-card .value-icon i {
+  color: #ffffff !important;
+}
+/* Handle SVG-based icons/logos */
+body.dark-mode .value-card .value-icon svg,
+body.dark-mode .value-card .value-icon svg * {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+body.dark-mode .tech-section .text-muted {
+  color: #c9c9c9 !important;
+}
+body.dark-mode .tech-badge {
+  background: #0f0f0f;
+  color: #eaeaea;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* =============================
+   Forums (Support) dark-mode tweaks
+   ============================= */
+/* Thread title hover should go white in dark mode */
+body.dark-mode .thread-card .thread-title:hover,
+body.dark-mode main .thread-title:hover {
+  color: #ffffff !important;
+}
+
+/* Thread meta info (poster, time, category, reply count) lighter in dark */
+body.dark-mode .thread-card .text-muted,
+body.dark-mode .thread-card small,
+body.dark-mode .card-header .text-muted {
+  color: #d9d9d9 !important;
+}
+
+/* Ensure message bubbles (white backgrounds) use black text for contrast */
+body.dark-mode .message-content {
+  background-color: #f8f9fa !important; /* keep light bubble */
+  color: #000000 !important; /* force dark text */
+}
+body.dark-mode .admin-reply .message-content {
+  background-color: #fff3f3 !important; /* keep existing style */
+  color: #000000 !important;
+}

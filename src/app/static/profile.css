@@ -1,0 +1,303 @@
+.overcover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.tab-content {
+  justify-content: center;
+  text-align: center;
+}
+
+/* Override navbar underline styles for profile tabs */
+.nav-tabs .nav-link::after {
+  content: none !important; /* Remove the underline element completely */
+}
+
+.nav-tabs .nav-link:hover::after,
+.nav-tabs .nav-link.active::after {
+  width: 0 !important; /* Ensure no width even on hover/active */
+}
+
+/* Custom tab styles */
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+  color: #666 !important; /* Force default color */
+  border: none;
+  padding: 8px 20px;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.3s ease;
+  border-radius: 20px;
+  margin: 0 5px;
+  margin-bottom: 10px; /* Add space between tabs and line */
+}
+
+.nav-tabs .nav-link:hover {
+  color: #ffffff !important; /* Force white text on hover */
+  background-color: #000000;
+  border: none;
+  transform: translateY(-2px);
+}
+
+.nav-tabs .nav-link.active {
+  color: #ffffff !important; /* Force white text when active */
+  border: none;
+  background-color: #000000;
+  transform: translateY(-2px);
+}
+
+/* Add shadow effect */
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link.active {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add this after your existing nav-tabs styles */
+.custom-nav-tabs {
+  border-bottom: 1px solid #dee2e6; /* Add a subtle gray line */
+  margin-bottom: 20px; /* Add some space between the line and content */
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 90px;
+}
+
+.pfp {
+  position: relative;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  margin-bottom: 10px;
+}
+
+.pfp img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.edit-button {
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pfp:hover .edit-button {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 60px;
+  font-family: "MuseoModerno", sans-serif;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .username {
+    font-size: 45px;
+  }
+}
+
+.bodyclass {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 300px) {
+  .grid {
+    columns: 1;
+    gap: 1px;
+  }
+
+  .grid img {
+    max-width: 100%;
+
+    /* padding-top: 12px !important; */
+  }
+}
+
+@media (min-width: 600px) {
+  .grid {
+    columns: 2;
+    gap: 1px;
+  }
+
+  .grid img {
+    max-width: 100%;
+    /* padding-top: 12px !important; */
+  }
+}
+
+@media (min-width: 900px) {
+  .grid {
+    columns: 3;
+    gap: 1px;
+  }
+
+  /* .grid img {
+              padding-top: 20px !important;
+              } */
+}
+
+.grid {
+  justify-content: center;
+  max-width: 3000px;
+}
+
+.grid img {
+  width: 600px;
+}
+.image-container:hover .download-button {
+  display: block;
+}
+
+.image-container:hover .delete-button {
+  display: block;
+}
+
+.image-container {
+  max-width: 1800px;
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+  overlay: hidden;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+/* Image hover effect */
+.image-container:hover {
+  transform: scale(1.03);
+  z-index: 2;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.image-container img {
+  width: 100%;
+}
+
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  /* transition: opacity 0.3s ease;  */
+  opacity: 0;
+}
+
+.image-container:hover::before {
+  opacity: 1;
+}
+
+.image-container:hover .image-username {
+  display: block;
+  /* Show the username when hovering over the image */
+}
+.download-button {
+  display: none;
+  position: absolute;
+  bottom: 5px;
+  right: 58px;
+  /* Adjusted left position */
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-decoration: none;
+  z-index: 2;
+}
+
+.download-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: 0.3s ease-in-out;
+}
+.download-button img {
+  height: 30px;
+  width: 30px;
+}
+.delete-button {
+  display: none;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.delete-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: 0.3s ease-in-out;
+}
+.delete-button img {
+  height: 30px;
+  width: 30px;
+}
+.image-container:hover .download-button2 {
+  display: block;
+}
+.download-button2 {
+  display: none;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  /* Adjusted left position */
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-decoration: none;
+  z-index: 2;
+}
+
+.download-button2:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: 0.3s ease-in-out;
+}
+.download-button2 img {
+  height: 30px;
+  width: 30px;
+}
+
+/* =============================
+   Dark Mode overrides for profile tabs
+   ============================= */
+body.dark-mode .nav-tabs .nav-link:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+body.dark-mode .nav-tabs .nav-link.active {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}

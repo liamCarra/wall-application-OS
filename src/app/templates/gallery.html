@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}
+Gallery
+{% endblock head_title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gallery.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Search form -->
+<div class="gallerytop">
+    <form method="GET" action="{% url 'gallery' %}">
+        <div class="search-wrapper">
+            <input class="search-bar" type="text" id="search" name="q" placeholder="Search for free pictures"
+                value="{{ request.GET.q|default:'4k wallpapers' }}">
+            <button class="btn-s" type="submit">
+                <img src="{% static 'images/search-icon.png' %}" alt="Search" class="search-icon">
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Loading GIF -->
+<div id="loading" class="loading-overlay">
+    <img src="{% static 'images/loading-clr.gif' %}" alt="Loading" class="loading-gif">
+</div>
+
+<!-- Top Search Terms Section -->
+<div class="top-search-terms-container">
+    <div class="top-search-terms">
+        <ul id="topSearchTermsList">
+            {% for term in top_search_terms %}
+            <li>
+                <a href="{% url 'gallery' %}?q={{ term }}" class="search-term-link">
+                    {{ term }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Gallery section -->
+<div class="bodyclass" id="gallery-container">
+    <!-- This container will control the visibility of images -->
+    <div id="gallery" class="hidden">
+        {% if results %}
+        <div class="grid">
+            {% for image in results %}
+            <div class="image-container">
+                <img src="{{ image.url }}" alt="Image from S3" class="gallery-image">
+                <div class="download-button">
+                    <a href="#" onclick="fetchAndDownload('{{ image.url }}'); return false;">
+                        <img src="{% static 'images/download.png' %}" alt="Download" class="icon">
+                    </a>
+                </div>
+                <div class="save-button">
+                    <img src="{% static 'images/plus.png' %}" alt="Save" class="icon"
+                        onclick="saveImage('{{ image.key }}')">
+                </div>
+                <div class="image-username">
+                    {% if image.username %}
+                    {% if username %}
+                    <a href="{% url 'profile_other' username=image.username %}" class="username">{{ image.username }}</a>
+                    {% else %}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="username">{{ image.username }}</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No results found.</p>
+        {% endif %}
+    </div>
+</div>
+</div>
+</div>
+<div id="custom-alert" class="custom-alert">
+    <div class="custom-alert-content">
+        <p id="alert-message"></p>
+        <button onclick="closeAlert()">OK</button>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<!-- Add this before your existing JavaScript -->
+<script>
+    // Click and drag scrolling for search terms
+    const slider = document.querySelector('.top-search-terms');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.style.cursor = 'grabbing';
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.style.cursor = 'grab';
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.style.cursor = 'grab';
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll speed multiplier
+        slider.scrollLeft = scrollLeft - walk;
+    });
+
+    // Show loader on search submit and top-term clicks
+    document.addEventListener('DOMContentLoaded', function () {
+        const loading = document.getElementById('loading');
+        const form = document.querySelector('.gallerytop form');
+        if (form && loading) {
+            form.addEventListener('submit', function () {
+                loading.classList.remove('hidden');
+            });
+        }
+        document.querySelectorAll('.search-term-link').forEach((a) => {
+            a.addEventListener('click', () => {
+                if (loading) loading.classList.remove('hidden');
+            });
+        });
+    });
+</script>
+
+<!-- Your existing JavaScript -->
+<script>
+    function fetchAndDownload(imageUrl) {
+        fetch(imageUrl, {
+            method: 'GET',
+            headers: { 'Cache-Control': 'no-cache' }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = imageUrl.split('/').pop(); // Extract the filename from the URL
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+    function showAlert(message) {
+        document.getElementById('alert-message').innerText = message;
+        document.getElementById('custom-alert').style.display = 'flex';
+    }
+
+    function closeAlert() {
+        document.getElementById('custom-alert').style.display = 'none';
+    }
+
+    function saveImage(imageKey) {
+        $.ajax({
+            type: 'POST',
+            url: '{% url "gallery" %}', // URL for your gallery view
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'image_key': imageKey
+            },
+            success: function (response) {
+                // Use custom alert for success message
+                showAlert('Image added to your favorites!');
+            },
+            error: function (xhr, errmsg, err) {
+                // Use custom alert for error message
+                showAlert('Error saving image.');
+            }
+        });
+    }
+
+    // When page fully loaded (images, CSS, etc.), hide the loader and show the gallery
+    window.addEventListener('load', function () {
+        const loading = document.getElementById('loading');
+        const gallery = document.getElementById('gallery');
+        if (loading) loading.classList.add('hidden');
+        if (gallery) gallery.classList.remove('hidden');
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock extra_js %}

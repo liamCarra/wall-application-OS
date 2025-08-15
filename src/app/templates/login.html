@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="header">
+    <div class="logo logomargins">
+        <a href="{% url 'homepage' %}">
+            <img src="/static/images/wlogo4.png" alt="Logo">
+        </a>
+    </div>
+</header>
+
+<!-- <h2>Login</h2> {{ msg }} -->
+<form class="formlogin" method="post">
+    <h2 class="title2">Login</h2> {{ msg }}
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    <label for="username"></label>
+    <input type="text" id="username" name="username" required placeholder="Enter Username"><br><br>
+
+    <label for="password"></label>
+    <input type="password" id="password" name="password" required placeholder="Enter Password"><br><br>
+
+    <button type="submit" class="buttonlogin">Login</button>
+
+    <p class="fyp2">
+        <span class="fyp2-text">Don't have an account?</span>
+        <a href="{% url 'signup' %}" class="signup-btn">Sign up</a>
+    </p>
+</form>
+
+{% endblock content %}
+

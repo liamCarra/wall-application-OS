@@ -1,0 +1,336 @@
+/* Hero Section */
+/* .about-hero {
+    height: 50vh;
+    background: url('../static/images/about-hero.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 4rem;
+}
+
+.about-hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.about-hero-content p {
+    font-size: 1.5rem;
+    opacity: 0.9;
+} */
+
+/* Mission Banner */
+.mission-banner {
+  position: relative;
+  height: 60vh;
+  background: url("../static/images/morning-sunrise-scenery-lake-landscape-ai-art-nature.jpg")
+    center/cover no-repeat;
+  padding: 6rem 0;
+  color: white;
+  margin-bottom: 4rem;
+
+  /* Flexbox properties for centering */
+  display: flex; /* Enable Flexbox */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}
+
+.mission-content {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+
+.mission-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.mission-banner h1,
+.mission-banner p {
+  position: relative;
+}
+
+.mission-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.mission-text {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  opacity: 0.9;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Divider styling */
+.section-divider {
+  margin: 3rem auto;
+  width: 80%;
+  opacity: 0.2;
+}
+
+/* Values Section */
+.values-section {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  padding: 2rem;
+}
+
+.value-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease, border-color 0.35s ease;
+  border: 1px solid transparent;
+  height: 100%;
+}
+
+.value-card:hover {
+  transform: translateY(-16px) scale(1.02);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(85, 188, 201, 0.25);
+  border-color: rgba(85, 188, 201, 0.35);
+}
+
+.value-icon {
+  width: 70px;
+  height: 70px;
+  background: #55bcc9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.value-icon i {
+  font-size: 1.8rem;
+  color: white;
+}
+
+.value-card h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.value-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Team Section */
+.team-section {
+  margin-bottom: 3rem;
+}
+
+.team-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+  margin-bottom: 2rem;
+  height: 100%;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.team-image {
+  height: 300px;
+  overflow: hidden;
+}
+
+.team-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-info {
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 300px);
+}
+
+.team-info h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.team-info .title {
+  color: #55bcc9;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.team-info .bio {
+  flex-grow: 1;
+  color: #666;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; /* standard property for compatibility */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.social-links a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #55bcc9;
+}
+
+/* Scroll-in animations */
+.mission-content,
+.value-card {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.mission-content.in-view,
+.value-card.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger value cards */
+.values-section .row > [class*="col-"]:nth-child(1) .value-card {
+  transition-delay: 0.05s;
+}
+.values-section .row > [class*="col-"]:nth-child(2) .value-card {
+  transition-delay: 0.18s;
+}
+.values-section .row > [class*="col-"]:nth-child(3) .value-card {
+  transition-delay: 0.31s;
+}
+
+/* Slight icon micro-interaction on hover */
+.value-card:hover .value-icon {
+  transform: scale(1.12) rotate(-6deg);
+  background: #4ab1bf; /* slightly deeper */
+  box-shadow: 0 8px 24px rgba(85, 188, 201, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* Tech We Use */
+.tech-section {
+  padding: 1rem 0 0.5rem;
+}
+
+.tech-list {
+  margin-top: 0.5rem;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f7fb;
+  color: #333;
+  border: 1px solid #e5e9f2;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.6s ease,
+    background 0.2s ease;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.tech-badge.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+.tech-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  background: #eef3fb;
+}
+
+/* stagger rows; fine for a handful */
+.tech-list .col-auto:nth-child(1) .tech-badge {
+  transition-delay: 0.05s;
+}
+.tech-list .col-auto:nth-child(2) .tech-badge {
+  transition-delay: 0.12s;
+}
+.tech-list .col-auto:nth-child(3) .tech-badge {
+  transition-delay: 0.19s;
+}
+.tech-list .col-auto:nth-child(4) .tech-badge {
+  transition-delay: 0.26s;
+}
+.tech-list .col-auto:nth-child(5) .tech-badge {
+  transition-delay: 0.33s;
+}
+.tech-list .col-auto:nth-child(6) .tech-badge {
+  transition-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-badge {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .about-hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-hero-content p {
+    font-size: 1.2rem;
+  }
+
+  .mission-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .mission-text {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+
+  .team-card {
+    max-width: 350px;
+    margin: 0 auto 2rem;
+  }
+
+  .team-card + .team-card {
+    margin-top: 2rem;
+  }
+}

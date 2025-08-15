@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head_title %}
+AI Image Generation
+{% endblock head_title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'ai.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% if not username %}
+<script>
+    // Redirect to homepage and show login modal
+    window.location.href = "{% url 'homepage' %}?show_login=true";
+</script>
+{% else %}
+<!-- Loading Overlay with CSS Spinner -->
+<div id="loading" class="loading-overlay" aria-live="polite" aria-busy="true">
+    <div class="spinner" role="status" aria-label="Loading"></div>
+</div>
+
+<div class="ai-container">
+    <!-- AI Showcase: first thing on the page -->
+    <section class="ai-showcase">
+        <div class="ai-grid">
+            <figure class="ai-card">
+                <img src="{% static 'images/ai1.jpg' %}" alt="AI example 1">
+            </figure>
+            <figure class="ai-card">
+                <img src="{% static 'images/ai2.jpg' %}" alt="AI example 2">
+            </figure>
+            <figure class="ai-card">
+                <img src="{% static 'images/ai3.jpg' %}" alt="AI example 3">
+            </figure>
+            <figure class="ai-card">
+                <img src="{% static 'images/ai4.jpg' %}" alt="AI example 4">
+            </figure>
+        </div>
+    </section>
+
+    <p class="ai-description">
+        Create unique images using artificial intelligence. Simply describe what you want to see,
+        and our AI will bring your vision to life.
+    </p>
+
+    <form id="generateForm" class="prompt-form" method="post" action="{% url 'generate_image' %}">
+        {% csrf_token %}
+        <input type="hidden" name="aspect_ratio" id="aspectRatio" value="9:16">
+        <textarea name="prompt" class="prompt-input" placeholder="Describe the image you want to create..."
+            required></textarea>
+        <div class="button-container">
+            <button type="submit" class="generate-btn" {% if not username %}disabled{% endif %}>
+                Generate Image
+                <span class="loading-dots"></span>
+            </button>
+            {% if not username %}
+            <p class="text-muted mt-2">Please log in to generate images</p>
+            {% endif %}
+            <div class="aspect-ratio-toggles">
+                <div class="ratio-toggle active" data-ratio="9:16">
+                    <img src="{% static 'images/portrait.png' %}" alt="Portrait" title="Portrait (9:16)">
+                </div>
+                <div class="ratio-toggle" data-ratio="16:9">
+                    <img src="{% static 'images/landscape.png' %}" alt="Landscape" title="Landscape (16:9)">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if image_url %}
+    <div class="image-container">
+        <img src="{{ image_url }}" alt="Generated Image" class="generated-image">
+        <button id="downloadButton" class="download-button">Download</button>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+<!-- Premium Upsell Modal -->
+<div class="modal fade" id="premiumModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upgrade to Premium</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">You've reached today's free limit (3 images). Go Premium for unlimited generations:</p>
+                <div class="card border-info" style="border-width:2px;">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-2">Premium · $2.99/month</h6>
+                        <ul class="mb-3" style="padding-left:1.1rem;">
+                            <li><i class="fa-regular fa-circle-check text-info"></i> Unlimited AI image generations</li>
+                            <li><i class="fa-regular fa-circle-check text-info"></i> Everything in Free</li>
+                            <li><i class="fa-regular fa-circle-check text-info"></i> Priority support</li>
+                        </ul>
+                        <div class="d-grid">
+                            <button id="goPremiumFromModal" type="button" class="btn btn-auth">Go Premium</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Move all DOM element selections to the top
+    const textarea = document.querySelector('.prompt-input');
+    const ratioToggles = document.querySelectorAll('.ratio-toggle');
+    const aspectRatioInput = document.getElementById('aspectRatio');
+    const generateForm = document.getElementById('generateForm');
+    const loadingOverlay = document.getElementById('loading');
+
+    // Aspect ratio toggle functionality
+    function initializeAspectRatioToggles() {
+        ratioToggles.forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                // First log to verify the click is detected
+                console.log('Toggle clicked:', this.dataset.ratio);
+
+                // Remove active class from all toggles
+                ratioToggles.forEach(t => t.classList.remove('active'));
+
+                // Add active class to clicked toggle
+                this.classList.add('active');
+
+                // Update hidden input value
+                aspectRatioInput.value = this.dataset.ratio;
+
+                // Log the new value to verify it changed
+                console.log('Input value updated to:', aspectRatioInput.value);
+            });
+        });
+    }
+
+    // Initialize toggles when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeAspectRatioToggles();
+
+        // Log initial state
+        console.log('Initial aspect ratio:', aspectRatioInput.value);
+    });
+
+    // Textarea auto-resize
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
+
+    // Form submission
+    const submitForm = async function (e) {
+        e.preventDefault();
+
+        // Get all required elements at the start
+        const form = this;
+        const button = form.querySelector('.generate-btn');
+        const dots = form.querySelector('.loading-dots');
+
+        if (!button || !dots) {
+            console.error('Required elements not found:', { button: !!button, dots: !!dots });
+            alert('An error occurred. Please refresh the page and try again.');
+            return;
+        }
+
+        try {
+            // Show loading state
+            button.disabled = true;
+            // Keep the loading-dots span by updating only the text node
+            button.firstChild.textContent = 'Generating';
+            dots.style.display = 'inline';
+            loadingOverlay.style.display = 'flex';
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data && data.upgrade) {
+                    // Show premium modal
+                    try {
+                        const modalEl = document.getElementById('premiumModal');
+                        const m = new bootstrap.Modal(modalEl);
+                        m.show();
+                    } catch (e) {
+                        // Fallback if Bootstrap JS namespace isn't available
+                        const modalEl = document.getElementById('premiumModal');
+                        modalEl.classList.add('show');
+                        modalEl.style.display = 'block';
+                        modalEl.removeAttribute('aria-hidden');
+                    }
+                    return; // stop normal flow
+                }
+                throw new Error(data.error || 'Failed to generate image');
+            }
+
+            if (data.image_url) {
+                let container = document.querySelector('.image-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.className = 'image-container';
+                    document.querySelector('.ai-container').appendChild(container);
+                }
+
+                container.innerHTML = `
+                    <img src="${data.image_url}" alt="Generated Image" class="generated-image">
+                    <button id="downloadButton" class="download-button">Download</button>
+                `;
+
+                // Add download functionality
+                document.getElementById('downloadButton').addEventListener('click', function () {
+                    fetch(data.image_url)
+                        .then(response => response.blob())
+                        .then(blob => {
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = data.image_url.split('/').pop();
+                            link.click();
+                            URL.revokeObjectURL(link.href);
+                        });
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.message || 'An error occurred while generating the image');
+        } finally {
+            // Reset form state
+            if (button && dots) {
+                button.disabled = false;
+                button.firstChild.textContent = 'Generate Image';
+                dots.style.display = 'none';
+            }
+            loadingOverlay.style.display = 'none';
+        }
+    };
+
+    // Add form submission listener
+    generateForm.addEventListener('submit', submitForm);
+
+    // Modal CTA handler
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('goPremiumFromModal');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                window.location.href = "{% url 'homepage' %}#pricing";
+            });
+        }
+    });
+
+    // Showcase scroll-in animations
+    (function setupShowcaseAnimations() {
+        const cards = document.querySelectorAll('.ai-card');
+        if (!cards.length) return;
+
+        // Initial hidden state is controlled via CSS.
+        if (!('IntersectionObserver' in window)) {
+            cards.forEach(c => c.classList.add('in-view'));
+            return;
+        }
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const options = isMobile ? { threshold: 0.05, rootMargin: '0px 0px 25% 0px' }
+            : { threshold: 0.15, rootMargin: '0px 0px 10% 0px' };
+        const ob = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    ob.unobserve(e.target);
+                }
+            })
+        }, options);
+        cards.forEach(c => ob.observe(c));
+    })();
+</script>
+{% endblock %}

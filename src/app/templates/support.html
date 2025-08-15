@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head_title %}
+Support
+{% endblock head_title %}
+
+{% block extra_css %}
+<style>
+    /* Page-specific top offset: keep desktop offset for fixed top navbar,
+       but remove it on mobile where the top navbar is hidden and bottom nav shows */
+    .support-main {
+        padding-top: 76px; /* desktop/tablet: account for fixed top navbar */
+    }
+    @media (max-width: 991.98px) {
+        .support-main {
+            padding-top: 0 !important; /* mobile: bring content up, fill gap */
+        }
+        /* Override Bootstrap's py-5 top padding on this page only (mobile) */
+        .support-main .container.py-5 {
+            padding-top: 6px !important;
+            padding-bottom: 24px; /* keep some space above bottom nav */
+        }
+        /* Ensure the first thread card sits flush without extra gap */
+        .support-main .col-md-9 .thread-card:first-of-type {
+            margin-top: 0 !important;
+        }
+    }
+
+    /* Thread title color */
+    .thread-title {
+        color: #55bcc9 !important;
+        /* Our purple theme color */
+        text-decoration: none;
+    }
+
+    .thread-title:hover {
+        color: #000000 !important;
+        /* Slightly darker on hover */
+    }
+
+    /* Status badge colors */
+    .bg-open {
+        background-color: #28a745;
+    }
+
+    .bg-resolved {
+        background-color: #6c63ff;
+    }
+
+    .bg-closed {
+        background-color: #dc3545;
+    }
+
+    /* Card hover effect */
+    .thread-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .thread-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="support-main">
+    <div class="container py-5">
+        <div class="row">
+            <!-- Search and Filters -->
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="GET">
+                            <div class="mb-3">
+                                <input type="text" name="q" class="form-control" placeholder="Search threads..."
+                                    value="{{ query }}">
+                            </div>
+                            <div class="mb-3">
+                                <select name="category" class="form-select">
+                                    <option value="">All Categories</option>
+                                    <option value="technical" {% if category == "technical" %}selected{% endif %}>
+                                        Technical
+                                        Support</option>
+                                    <option value="order" {% if category == "order" %}selected{% endif %}>Order Issues
+                                    </option>
+                                    <option value="general" {% if category == "general" %}selected{% endif %}>General
+                                        Questions</option>
+                                    <option value="feedback" {% if category == "feedback" %}selected{% endif %}>Feedback
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-auth w-100">Apply Filters</button>
+                        </form>
+                    </div>
+                </div>
+                {% if username %}
+                <a href="{% url 'create_thread' %}" class="btn btn-auth w-100">Create New Thread</a>
+                {% endif %}
+            </div>
+
+            <!-- Thread List -->
+            <div class="col-md-9" style="margin-top: 12px;">
+                {% for thread in threads %}
+                <div class="card mb-3 thread-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <a href="{% url 'thread_detail' thread.id %}" class="thread-title">
+                                    {{thread.title}}
+                                </a>
+                            </h5>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-{{thread.status}}">{{thread.status|title}}</span>
+                                {% if username and username == thread.author_username %}
+                                <form method="POST" action="{% url 'delete_thread' thread.id %}" onsubmit="return confirm('Are you sure you want to delete this thread? This cannot be undone.');" class="ms-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="text-muted small mt-2">
+                            Posted by {{thread.author_username}} | {{thread.created_at|timesince}} ago
+                            | {{thread.category|title}}
+                        </div>
+                        <div class="mt-2">
+                            <span class="text-muted">{{thread.messages.count}} replies</span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <h4>No threads found</h4>
+                    <p class="text-muted">Try adjusting your search or filters</p>
+                </div>
+                {% endfor %}
+
+                <!-- Pagination -->
+                {% if threads.has_other_pages %}
+                <nav aria-label="Thread pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if threads.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ threads.previous_page_number }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in threads.paginator.page_range %}
+                        <li class="page-item {% if threads.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endfor %}
+
+                        {% if threads.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ threads.next_page_number }}">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top glass-nav">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'homepage' %}">
+            {% load static %}
+            <img src="{% static 'images/wlogo4.png' %}" alt="Wallify Logo" class="navbar-logo">
+        </a>
+        <a class="navbar-brand-wallify me-auto" href="{% url 'homepage' %}">Wallify</a>
+
+        <!-- Theme toggle button -->
+        <button id="themeToggle" class="btn btn-outline-auth ms-2 order-lg-last" type="button"
+            aria-label="Toggle theme">
+            <i class="fa-regular fa-moon"></i>
+        </button>
+
+        <!-- Move user button outside the collapsible menu -->
+        {% if username %}
+        <div class="dropdown d-inline-block user-button order-lg-last ms-2">
+            <img src="{{ profile_picture_url }}" class="pfp-btn dropdown-toggle" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">View Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+        {% endif %}
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <div class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                        href="{% url 'homepage' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/about/' %}active{% endif %}"
+                        href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/generate_image/' %}active{% endif %}"
+                        href="{% url 'generate_image' %}">AI</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/gallery/' %}active{% endif %}"
+                        href="{% url 'gallery' %}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/support/' %}active{% endif %}"
+                        href="{% url 'support' %}">Forums</a>
+                </li>
+            </ul>
+            {% if not username %}
+            <div class="auth-buttons">
+                <button class="btn btn-outline-auth me-2" data-bs-toggle="modal"
+                    data-bs-target="#loginModal">Login</button>
+                <button class="btn btn-auth" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Enable toggling on all pages (supports multiple toggles: top and mobile bottom)
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggles = Array.from(document.querySelectorAll('#themeToggle, .theme-toggle'));
+        if (!toggles.length) return;
+
+        const setIconFor = (btn, dark) => {
+            const i = btn.querySelector('i');
+            if (!i) return;
+            i.className = dark ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+            btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+        };
+
+        const applyIconAll = () => {
+            const dark = document.body.classList.contains('dark-mode');
+            toggles.forEach(btn => setIconFor(btn, dark));
+        };
+
+        applyIconAll();
+
+        toggles.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const nowDark = !document.body.classList.contains('dark-mode');
+                document.body.classList.toggle('dark-mode');
+                try { localStorage.setItem('theme', nowDark ? 'dark' : 'light'); } catch (e) { }
+                applyIconAll();
+            });
+        });
+    });
+</script>

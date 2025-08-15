@@ -1,0 +1,214 @@
+/* Mobile bottom navigation bar */
+@media (max-width: 991.98px) {
+  body {
+    padding-bottom: 84px; /* match taller mobile nav (height + buffer) */
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px; /* was 60px */
+    background: rgba(10, 10, 10, 0.45);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    z-index: 1000; /* same as top navbar, below Bootstrap modals */
+    color: #ffffff; /* default text/icon color */
+  }
+
+  .mobile-bottom-nav .mobile-nav-item {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 12px; /* slightly larger text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px; /* more breathing room */
+  }
+
+  .mobile-bottom-nav .mobile-nav-item i {
+    font-size: 22px; /* subtle bump */
+    height: 26px;
+    line-height: 26px;
+  }
+
+  /* Home logo image */
+  .mobile-bottom-nav .mobile-home-logo {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  /* Ensure all anchors inside nav inherit color and no underline */
+  .mobile-bottom-nav a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* Theme toggle sizing matches other items */
+  .mobile-bottom-nav .theme-toggle i {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .mobile-bottom-nav .mobile-nav-item span,
+  .mobile-bottom-nav .theme-toggle span {
+    font-size: 12px;
+  }
+
+  .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle):hover,
+  .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle).active {
+    color: #ffffff;
+  }
+  /* Force icon and text to pick up active color */
+  .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle).active i,
+  .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle).active span {
+    color: #55bcc9 !important;
+  }
+  /* Tint the home logo to cyan when active */
+  .mobile-bottom-nav .mobile-nav-item.home.active .mobile-home-logo {
+    filter: invert(57%) sepia(30%) saturate(707%) hue-rotate(143deg)
+      brightness(93%) contrast(87%);
+  }
+
+  /* Profile picture in mobile nav */
+  .mobile-bottom-nav .mobile-pfp {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  /* Auth group shows two compact stacked links */
+  .mobile-bottom-nav .auth-group {
+    gap: 0;
+  }
+  .mobile-bottom-nav .auth-group .auth-link + .auth-link {
+    margin-top: -4px; /* tighten */
+  }
+  .mobile-bottom-nav .auth-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Theme toggle button reset */
+  .mobile-bottom-nav .theme-toggle {
+    border: none;
+    background: transparent;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  /* Profile trigger uses same layout as link */
+  .mobile-bottom-nav .profile-trigger {
+    border: 0;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+
+  /* Make dropdown menu centered above (dropup) */
+  .mobile-bottom-nav .dropdown-menu-center {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* Hide the top navbar entirely on mobile */
+  nav.navbar {
+    display: none !important;
+  }
+}
+
+/* Dark mode styles */
+@media (max-width: 991.98px) {
+  body.dark-mode .mobile-bottom-nav {
+    background: rgba(10, 10, 10, 0.45);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  body.dark-mode .mobile-bottom-nav .mobile-nav-item {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  body.dark-mode .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle):hover,
+  body.dark-mode .mobile-bottom-nav .mobile-nav-item:not(.theme-toggle).active {
+    color: #55bcc9;
+  }
+  body.dark-mode .mobile-bottom-nav .dropdown-menu {
+    background: #0f0f0f;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  body.dark-mode .mobile-bottom-nav .dropdown-item {
+    color: #ffffff;
+  }
+  body.dark-mode .mobile-bottom-nav .dropdown-item:hover {
+    background: #55bcc9;
+    color: #ffffff;
+  }
+
+  /* Ensure theme toggle never gets cyan on hover/active */
+  .mobile-bottom-nav .theme-toggle:hover,
+  .mobile-bottom-nav .theme-toggle:active,
+  .mobile-bottom-nav .theme-toggle.active,
+  .mobile-bottom-nav .theme-toggle:hover i,
+  .mobile-bottom-nav .theme-toggle:active i,
+  .mobile-bottom-nav .theme-toggle.active i,
+  .mobile-bottom-nav .theme-toggle:hover span,
+  .mobile-bottom-nav .theme-toggle:active span,
+  .mobile-bottom-nav .theme-toggle.active span {
+    color: inherit !important;
+  }
+
+  /* Profile offcanvas bottom sheet theming */
+  .mobile-profile-sheet {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  .mobile-profile-sheet .offcanvas-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  body.dark-mode .mobile-profile-sheet {
+    background: #0f0f0f;
+    color: #ffffff;
+  }
+  body.dark-mode .mobile-profile-sheet .offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  body.dark-mode .mobile-profile-sheet .list-group-item {
+    background: transparent;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  body.dark-mode .mobile-profile-sheet .list-group-item:hover {
+    background: #55bcc9;
+    color: #ffffff;
+  }
+
+  /* Make offcanvas close button white in dark mode */
+  body.dark-mode .mobile-profile-sheet .btn-close {
+    filter: invert(1) grayscale(100%);
+    opacity: 0.9;
+  }
+  body.dark-mode .mobile-profile-sheet .btn-close:hover,
+  body.dark-mode .mobile-profile-sheet .btn-close:focus {
+    filter: invert(1) grayscale(100%);
+    opacity: 1;
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,106 @@
+body {
+  /* font-family: "Work Sans", sans-serif !important; */
+  font-family: "JetBrains Mono", monospace;
+  /* font-family: "aeronaut", sans-serif; */
+}
+
+/* Modal Styles */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding: 1.5rem 1.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header .btn-close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.modal-title {
+  color: #000000;
+  font-size: 55px;
+  font-family: "MuseoModerno", sans-serif;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+}
+
+.modal .form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.modal .form-control {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: none;
+  background-color: #e6e6e6;
+  color: #000000;
+  margin-bottom: 0px;
+  box-sizing: border-box;
+}
+
+.modal .form-control:focus {
+  border-color: #55bcc9;
+  box-shadow: 0 0 0 0.2rem rgba(85, 188, 201, 0.25);
+}
+
+.modal .btn-primary {
+  background-color: #55bcc9;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modal .btn-primary:hover {
+  background-color: #4aa3af;
+  transform: translateY(-1px);
+}
+
+.modal a {
+  color: #55bcc9;
+  text-decoration: none;
+}
+
+.modal a:hover {
+  color: #4aa3af;
+  text-decoration: underline;
+}
+
+/* Add these styles for the modal backdrop blur effect */
+.modal-backdrop {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+/* Optional: Add a smooth transition */
+.modal.fade .modal-backdrop {
+  transition: backdrop-filter 0.3s ease-in-out;
+}

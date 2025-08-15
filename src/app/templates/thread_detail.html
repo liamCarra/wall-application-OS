@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head_title %}
+Thread Detail's
+{% endblock head_title %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        background-color: #6c63ff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+    }
+
+    .admin-reply .avatar {
+        background-color: #dc3545;
+    }
+
+    .message-content {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .admin-reply .message-content {
+        background-color: #fff3f3;
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        color: white !important;
+    }
+
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+
+    .bg-primary {
+        background-color: #55bcc9 !important;
+    }
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+
+    .reply-form textarea {
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+    }
+
+    .reply-form textarea:focus {
+        border-color: #6c63ff;
+        box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main style="padding-top: 76px;">
+    <div class="container py-5">
+        <!-- Add back button -->
+        <div class="mb-4">
+            <a href="{% url 'support' %}" class="btn btn-outline-auth">
+                <i class="fas fa-arrow-left"></i> Back to Support
+            </a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center bg-white py-3">
+                <div>
+                    <h4 class="mb-0">{{ thread.title }}</h4>
+                    <small class="text-muted">Posted by {{ thread.author_username }} | {{ thread.created_at|timesince }}
+                        ago</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span
+                        class="badge me-2 status-badge {% if thread.status == 'open' %}bg-success{% elif thread.status == 'resolved' %}bg-primary{% else %}bg-danger{% endif %}">
+                        {{ thread.status|title }}
+                    </span>
+                    {% if username == thread.author_username %}
+                    <div class="dropdown">
+                        <button class="btn btn-auth dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Change Status
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item"
+                                    href="{% url 'change_thread_status' thread.id 'open' %}">Open</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'change_thread_status' thread.id 'resolved' %}">Resolved</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{% url 'change_thread_status' thread.id 'closed' %}">Closed</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                {% for message in messages %}
+                <div class="message {% if message.is_admin_reply %}admin-reply{% endif %} mb-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="avatar">{{ message.author_username|first|upper }}</div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mb-1">
+                                    {{ message.author_username }}
+                                    {% if message.is_admin_reply %}
+                                    <span class="badge bg-danger">Staff</span>
+                                    {% endif %}
+                                </h6>
+                                <small class="text-muted">{{ message.created_at|timesince }} ago</small>
+                            </div>
+                            <div class="message-content">
+                                {{ message.content|linebreaks }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if username %}
+        <div class="card reply-form">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Your Reply</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-auth">Post Reply</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <p>login to reply to this thread.</p>
+        </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
